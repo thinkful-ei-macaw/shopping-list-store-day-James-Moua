@@ -1,3 +1,4 @@
+'use strict';
 const store = {
   items: [
     { id: cuid(), name: 'apples', checked: false },
@@ -25,6 +26,9 @@ const generateItemElement = function (item) {
         </button>
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
+        </button>
+        <button class='shopping-item-edit js-item-edit'>
+          <span class='button-label'>edit</span>
         </button>
       </div>
     </li>`;
@@ -145,6 +149,26 @@ const handleToggleFilterClick = function () {
   });
 };
 
+/*
+
+*/
+
+//Create a function that changes one or more properties in the store
+const toggleNameFromElement = function (newName, id) {
+  const foundItem = store.items.find(item => item.id === id);
+  foundItem.name = newName;
+};
+
+//Create a function that adds an event listener, changing the store and running the renderer
+const handleEditName = function () {
+  $('.js-shopping-list').on('click', '.js-item-edit', event => {
+    const newName = prompt('Edit item name to:');
+    const id = getItemIdFromElement(event.currentTarget);
+    toggleNameFromElement(newName, id);
+    render();
+  });
+};
+
 /**
  * This function will be our callback when the
  * page loads. It is responsible for initially 
@@ -160,6 +184,7 @@ const handleShoppingList = function () {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleFilterClick();
+  handleEditName();
 };
 
 // when the page loads, call `handleShoppingList`
